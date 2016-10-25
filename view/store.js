@@ -266,7 +266,8 @@ class StoreItemList extends Component{
 
 }
 
-class StoreView extends Component{
+//class StoreView extends Component{
+export default class extends Component{
   static propTypes = {
     uid: React.PropTypes.string.isRequired,
   }
@@ -366,32 +367,32 @@ class StoreView extends Component{
 
 }
 
-export default class extends Component{
-  static propTypes = {
-    uid: React.PropTypes.string.isRequired,
-  };
+// export default class extends Component{
+//   static propTypes = {
+//     uid: React.PropTypes.string.isRequired,
+//   };
 
-  componentDidMount() {
-    //StatusBarIOS.setStyle(0);
-  }
+//   componentDidMount() {
+//     //StatusBarIOS.setStyle(0);
+//   }
 
-  render(){
-    return (
-      <Navigator
-      ref='nav'
-      style={styles.container}
-      initialRoute={{
-        title:"华大商城",
-        component: StoreView,
-        passProps:{uid:this.props.uid},
-        shadowHidden: true
-      }}
-      renderScene={ ( route, navigator ) => StoreView }
-      itemWrapperStyle={styles.itemWrapper}
-      tintColor="#777"/>
-    );
-  }
-}
+//   render(){
+//     return (
+//       <Navigator
+//       ref='nav'
+//       style={styles.container}
+//       initialRoute={{
+//         title:"华大商城",
+//         component: StoreView,
+//         passProps:{uid:this.props.uid},
+//         shadowHidden: true
+//       }}
+//       renderScene={ ( route, navigator ) => StoreView }
+//       itemWrapperStyle={styles.itemWrapper}
+//       tintColor="#777"/>
+//     );
+//   }
+// }
 
 /**
  * responsive

@@ -194,12 +194,12 @@ class Bar extends Component{
         renderIcon={()=><Image style={styles.tabIcon} source={tabNomal}/>}  
         renderSelectedIcon={()=><Image style={styles.tabIcon} source={tabPress}/>}  
         selected={this.state.selectedTab===tabName}  
-        selectedTitleStyle={{color:'#f85959'}}  
+        selectedTitleStyle={{color:'#048D11'}}  
         onPress={()=>this.onPress(tabName)}  
         renderBadge={()=>isBadge?<View style={styles.badgeView}><Text style={styles.badgeText}>15</Text></View>:null}  
        >  
         <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-        <Text>{tabContent}</Text>
+        <Text  style={{color:"#555",fontSize:13,marginTop:10,marginBottom:10}}>{tabContent}</Text>
         {navigatorview}
         </View> 
          
@@ -237,7 +237,7 @@ class Bar extends Component{
 const styles = StyleSheet.create({  
   container: {  
     flex: 1,  
-    backgroundColor: '#F5FCFF',  
+    backgroundColor: '#FFFFFF',  //1E868C
   },  
   welcome: {  
     fontSize: 20,  

@@ -533,7 +533,8 @@ class OrderListItems extends Component{
   }
 }
 
-class OrderList extends Component{
+//class OrderList extends Component{
+export default class extends Component{
   static propTypes = {
     uid: React.PropTypes.string.isRequired,
   };
@@ -604,33 +605,33 @@ class OrderList extends Component{
   }
 }
 
-export default class extends Component{
-  static propTypes = {
-    uid: React.PropTypes.string.isRequired,
-  };
+// export default class extends Component{
+//   static propTypes = {
+//     uid: React.PropTypes.string.isRequired,
+//   };
 
-  componentDidMount() {
-    //StatusBarIOS.setStyle(0);
-  }
+//   componentDidMount() {
+//     //StatusBarIOS.setStyle(0);
+//   }
 
-  render() {
-    return (
-      <Navigator
-        ref='nav'
-        style={styles.container}
-        initialRoute={{
-          title:"全部订单",
-          component: OrderList,
-          passProps:{uid:this.props.uid},
-          shadowHidden: true
-        }}
-        renderScene={ ( route, navigator ) => OrderList }
-        itemWrapperStyle={styles.itemWrapper}
-        tintColor="#777"
-      />
-    );
-  }
-}
+//   render() {
+//     return (
+//       <Navigator
+//         ref='nav'
+//         style={styles.container}
+//         initialRoute={{
+//           title:"全部订单",
+//           component: OrderList,
+//           passProps:{uid:this.props.uid},
+//           shadowHidden: true
+//         }}
+//         renderScene={ ( route, navigator ) => OrderList }
+//         itemWrapperStyle={styles.itemWrapper}
+//         tintColor="#777"
+//       />
+//     );
+//   }
+// }
 
 const styles = StyleSheet.create({
   container:{

@@ -754,7 +754,8 @@ class UserShare extends Component{
  *                      -> userLink
  */
 
-class UserView extends Component{
+//class UserView extends Component{
+export default class extends Component{
   static propTypes = {
     uid: React.PropTypes.string.isRequired,
     isFirstTime: React.PropTypes.bool.isRequired,
@@ -901,10 +902,10 @@ class UserView extends Component{
             <View style={styles.bgImageWrapper}>
                   <Image source={require("./img/logo.png")} style={styles.icon}>
                   </Image>
-                  <Text style={{fontSize:18,color:"#3a3a3a"}}>{data.username? data.username:"用户名未设置"}</Text>
-                  <Text style={{fontSize:11,color:"#3a3a3a",marginTop:5}}>帐号：{data.cellphone}</Text>
-                  <Text style={{fontSize:11,color:"#3a3a3a",marginTop:5}}>钱包：¥{this.state.balance}（可提现） ¥{this.state.balance}(冻结）</Text>
-                  <Text style={{fontSize:11,color:"#3a3a3a",marginTop:5}}>银行卡：{data.alipay? data.alipay:"未绑定银行卡"}</Text>              
+                  <Text style={{fontSize:18,color:"#3a3a3a",marginTop:10,top:35,left:130}}>{data.username? data.username:"用户名未设置"}</Text>
+                  <Text style={{fontSize:11,color:"#3a3a3a",marginTop:10,top:40,left:130}}>帐号：{data.cellphone}</Text>
+                  <Text style={{fontSize:11,color:"#3a3a3a",marginTop:10,top:45,left:130}}>钱包：¥{this.state.balance}（可提现） ¥{this.state.balance}(冻结）</Text>
+                  <Text style={{fontSize:11,color:"#3a3a3a",marginTop:10,top:50,left:130}}>银行卡：{data.alipay? data.alipay:"未绑定银行卡"}</Text>              
             </View>
           </View>
         </View>
@@ -954,51 +955,51 @@ class UserView extends Component{
   }
 }
 
-export default class extends Component{
-  static propTypes = {
-    uid: React.PropTypes.string.isRequired, 
-    isFirstTime: React.PropTypes.bool.isRequired, 
-    callbackLogout: React.PropTypes.func.isRequired,
-  };
+// export default class extends Component{
+//   static propTypes = {
+//     uid: React.PropTypes.string.isRequired, 
+//     isFirstTime: React.PropTypes.bool.isRequired, 
+//     callbackLogout: React.PropTypes.func.isRequired,
+//   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isFirstTime: this.props.isFirstTime,
-      uid: this.props.uid,
-    };
-  }
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       isFirstTime: this.props.isFirstTime,
+//       uid: this.props.uid,
+//     };
+//   }
 
-  componentDidMount() {
-    //StatusBarIOS.setStyle(0);
-  }
+//   componentDidMount() {
+//     //StatusBarIOS.setStyle(0);
+//   }
 
-  render(){
-    const callback = this.props.callbackLogout;
-    const isFirstTime = this.state.isFirstTime;
-    const uid = this.state.uid;
+//   render(){
+//     const callback = this.props.callbackLogout;
+//     const isFirstTime = this.state.isFirstTime;
+//     const uid = this.state.uid;
 
-    return (
-      <Navigator
-        ref='nav'
-        style={styles.container}
-        initialRoute={{
-          title:"我的帐户",
-          component: UserView,
-          passProps: {
-            callbackLogout: callback,
-            isFirstTime: isFirstTime,
-            uid: uid,
-          },
-          shadowHidden: true
-        }}
-        renderScene={ ( route, navigator ) => UserView }
-        itemWrapperStyle={styles.itemWrapper}
-        tintColor="#777"
-      />
-    );
-  }
-}
+//     return (
+//       <Navigator
+//         ref='nav'
+//         style={styles.container}
+//         initialRoute={{
+//           title:"我的帐户",
+//           component: UserView,
+//           passProps: {
+//             callbackLogout: callback,
+//             isFirstTime: isFirstTime,
+//             uid: uid,
+//           },
+//           shadowHidden: true
+//         }}
+//         renderScene={ ( route, navigator ) => UserView }
+//         itemWrapperStyle={styles.itemWrapper}
+//         tintColor="#777"
+//       />
+//     );
+//   }
+// }
 
 const styles = StyleSheet.create({
   container:{
