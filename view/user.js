@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { 
   AsyncStorage,
   AlertIOS,
-  NavigatorIOS,
+  //NavigatorIOS,
+  Navigator,
   TouchableHighlight,
   TouchableOpacity,
   StyleSheet,
@@ -24,7 +25,7 @@ import Util from './utils';
 import Icon from 'react-native-vector-icons/FontAwesome';
 //import ActivityView from 'react-native-activity-view';
 import ImagePickerManager from 'react-native-image-picker';
-import { BlurView,VibrancyView } from 'react-native-blur';
+//import VibrancyView  from 'react-native-blur';
 import Form from 'react-native-form';
 
 // Configuration file
@@ -898,16 +899,12 @@ class UserView extends Component{
         <View style={{marginBottom:35}}>
           <View style={styles.userHero}>
             <View style={styles.bgImageWrapper}>
-              
-                <BlurView blurType="light" style={styles.blur}>
                   <Image source={require("./img/logo.png")} style={styles.icon}>
                   </Image>
                   <Text style={{fontSize:18,color:"#3a3a3a"}}>{data.username? data.username:"用户名未设置"}</Text>
                   <Text style={{fontSize:11,color:"#3a3a3a",marginTop:5}}>帐号：{data.cellphone}</Text>
                   <Text style={{fontSize:11,color:"#3a3a3a",marginTop:5}}>钱包：¥{this.state.balance}（可提现） ¥{this.state.balance}(冻结）</Text>
-                  <Text style={{fontSize:11,color:"#3a3a3a",marginTop:5}}>银行卡：{data.alipay? data.alipay:"未绑定银行卡"}</Text>
-                </BlurView>
-              
+                  <Text style={{fontSize:11,color:"#3a3a3a",marginTop:5}}>银行卡：{data.alipay? data.alipay:"未绑定银行卡"}</Text>              
             </View>
           </View>
         </View>
@@ -982,7 +979,7 @@ export default class extends Component{
     const uid = this.state.uid;
 
     return (
-      <NavigatorIOS
+      <Navigator
         ref='nav'
         style={styles.container}
         initialRoute={{
@@ -995,6 +992,7 @@ export default class extends Component{
           },
           shadowHidden: true
         }}
+        renderScene={ ( route, navigator ) => UserView }
         itemWrapperStyle={styles.itemWrapper}
         tintColor="#777"
       />

@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react';
 import { 
-  NavigatorIOS,
+  //NavigatorIOS,
+  Navigator,
   TouchableHighlight,
   TouchableOpacity,
   StyleSheet,
@@ -21,7 +22,7 @@ import {
 
 import Util from './utils';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { BlurView, VibrancyView } from 'react-native-blur';
+//import { BlurView, VibrancyView } from 'react-native-blur';
 import ItemOrder from './itemOrder';
 
 // Configuration file
@@ -179,7 +180,6 @@ class ItemDetail extends Component{
         <View style={styles.detailImg}>
           <View style={styles.bgImageWrapper}>
             <Image source={{uri:data.img}} style={styles.backgroundImage}>
-              <VibrancyView blurType="light" style={styles.blur}>
                 <View style={{paddingTop: 70, paddingLeft: 30,}}>
                   <Text style={{color:"rgba(255,255,255,0.7)",fontSize:28}}>{data.title}</Text>
                   <Text style={{color:"rgba(255,255,255,0.7)",fontSize:15,marginTop:5}}>{star}</Text>
@@ -192,7 +192,6 @@ class ItemDetail extends Component{
                     <Icon color="rgba(255,255,255,0.7)" size={15} style={{paddingRight:15}} name="tags"> <Text>{data.tag}</Text></Icon>
                   </View>
                 </View>
-              </VibrancyView>
             </Image>
             <View style={styles.noblur}>
               <Text numberOfLines={data.lines} style={{fontSize:12,color:"rgba(0,0,0,0.5)",flex:1}}>{data.fullIntro}</Text>
@@ -378,7 +377,7 @@ export default class extends Component{
 
   render(){
     return (
-      <NavigatorIOS
+      <Navigator
       ref='nav'
       style={styles.container}
       initialRoute={{
@@ -387,6 +386,7 @@ export default class extends Component{
         passProps:{uid:this.props.uid},
         shadowHidden: true
       }}
+      renderScene={ ( route, navigator ) => StoreView }
       itemWrapperStyle={styles.itemWrapper}
       tintColor="#777"/>
     );

@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import {
   TouchableHighlight,
   StyleSheet,
-  NavigatorIOS,
+  //NavigatorIOS,
+  Navigator,
   StatusBarIOS,
   Text,
   Image,
@@ -166,7 +167,7 @@ export default class extends Component{
 
   render(){
     return (
-      <NavigatorIOS
+      <Navigator
         ref='nav'
         style={styles.container}
         initialRoute={{
@@ -175,6 +176,7 @@ export default class extends Component{
           passProps: {data: updateData, uid:this.props.uid},
           shadowHidden: true
         }}
+        renderScene={ ( route, navigator ) => UpdateList }
         itemWrapperStyle={styles.itemWrapper}
         tintColor="#777"
       />

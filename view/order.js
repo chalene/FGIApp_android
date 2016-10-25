@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   StyleSheet,
-  NavigatorIOS,
+  //NavigatorIOS,
+  Navigator,
   StatusBarIOS,
   ListView,
   TextInput,
@@ -614,7 +615,7 @@ export default class extends Component{
 
   render() {
     return (
-      <NavigatorIOS
+      <Navigator
         ref='nav'
         style={styles.container}
         initialRoute={{
@@ -623,6 +624,7 @@ export default class extends Component{
           passProps:{uid:this.props.uid},
           shadowHidden: true
         }}
+        renderScene={ ( route, navigator ) => OrderList }
         itemWrapperStyle={styles.itemWrapper}
         tintColor="#777"
       />
