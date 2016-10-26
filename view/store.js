@@ -237,7 +237,7 @@ class StoreItemList extends Component{
     const StoreItems = data.map((elem,index) => {
       star = '★'.repeat(elem.star) + '☆'.repeat(5-elem.star)
       return (
-        <TouchableHighlight style={{marginBottom: 5}}  key={elem.key} onPress={()=>this._onPress(index)}>
+        <TouchableHighlight style={{marginBottom: 5, width: Util.size.width}}  key={elem.key} onPress={()=>this._onPress(index)}>
           <View style={styles.storeItemContainer}>
             <View style={styles.bgImageWrapper}>
               <Image style={styles.backgroundImage} source={{uri:elem.img}}></Image>

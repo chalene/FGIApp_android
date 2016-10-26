@@ -4,7 +4,8 @@ import {
   TabBarIOS,  //IOS only
   StatusBarIOS,
   Text,  
-  StyleSheet,    
+  StyleSheet,  
+  Navigator,  
   Image,
   View,
 } from 'react-native';
@@ -37,7 +38,7 @@ const TAB_PRESS_4=require('./image/icon_bottomtag_me_s.png');
  *   -false. fully functioned. 
  */
 
-class Bar extends Component{
+class BarApp extends Component{
   static defaultProps = {
     isFirstTime: "0"
   };
@@ -233,6 +234,43 @@ class Bar extends Component{
     );  
   }  
 }  
+
+class Bar extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  renderScene(route, navigator) {
+    let Component = route.component
+
+    return (
+      <Component navigator={navigator} route={route} />
+    )
+  }
+
+  configureScene(route) {
+    if (route.name && route.name === 'Search') {
+      return Navigator.SceneConfigs.FadeAndroid
+    } else {
+      return Navigator.SceneConfigs.FloatFromBottomAndroid
+    }
+  }
+
+  render() {
+    return (
+      <Navigator
+        ref='navigator'
+        style={styles.container}
+        configureScene={this.configureScene}
+        renderScene={this.renderScene}
+        initialRoute={{
+          component: BarApp,
+          name: 'BarApp'
+        }}
+      />
+    )
+  }
+}
 
 const styles = StyleSheet.create({  
   container: {  

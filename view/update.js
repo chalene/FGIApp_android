@@ -69,6 +69,7 @@ class UpdateListItems extends Component{
       passProps:{data:data}
     })
   }
+  
 
   render() {
     const items = this.props.data.map((elem) => {
@@ -77,7 +78,7 @@ class UpdateListItems extends Component{
           <View style={styles.updateItemDate}>
             <Text style={{color:"#FFF",fontSize:12}}>{elem.date}</Text>
           </View>
-          <TouchableHighlight underlayColor="#eee" style={styles.updateItem} onPress={() => this._onPress(elem)}>
+          <TouchableHighlight underlayColor="#eee" style={styles.updateItem} onPress={() => this._onPress.bind(elem)}>
             <View>
               <Text style={{color:"#222",fontSize:15, paddingLeft:10, marginLeft:20}}>{elem.title}</Text>
               <View style={styles.updateImgContainer}>
@@ -98,7 +99,7 @@ class UpdateListItems extends Component{
   }
 }
 
-//class UpdateList extends Component{
+///class UpdateList extends Component{
 export default class extends Component{
   static propTypes = {
     data: React.PropTypes.array.isRequired,
@@ -179,7 +180,7 @@ export default class extends Component{
 //           passProps: {data: updateData, uid:this.props.uid},
 //           shadowHidden: true
 //         }}
-//         renderScene={ ( route, navigator ) => UpdateList }
+//         renderScene={ ( route, navigator ) => UpdateListItems }
 //         itemWrapperStyle={styles.itemWrapper}
 //         tintColor="#777"
 //       />

@@ -510,7 +510,7 @@ class OrderListItems extends Component{
     const data = this.props.data;
     const items = data.map((rowData, index) => {
       return(
-        <TouchableHighlight key={rowData.order_number} style={styles.orderListTouch} underlayColor="rgba(0,0,0,0.3)" onPress={()=>this._renderOrderDetail(rowData)}>
+        <TouchableHighlight key={rowData.order_number} style={styles.orderListTouch} underlayColor="rgba(0,0,0,0.3)" onPress={()=>this._renderOrderDetail.bind(rowData)}>
           <View style={styles.orderList}>
             <View style={[styles.orderStatus,{backgroundColor:rowData.bg}]}>
               <Text style={{color:"#fff"}}>订单状态：{rowData.status}</Text>
@@ -642,6 +642,8 @@ const styles = StyleSheet.create({
   },
   orderListContainer:{
     position:"relative",
+    width: Util.size.width-40,
+    paddingBottom:20,
     top: -15
   },
   orderListTouch:{
