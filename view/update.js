@@ -41,7 +41,7 @@ class UpdateDetail extends Component{
   static propTypes = {
     data: React.PropTypes.object.isRequired,
   };
-
+  
   render() {
     return(
         <WebView
@@ -60,7 +60,7 @@ class UpdateListItems extends Component{
   static propTypes = {
     data: React.PropTypes.array.isRequired,
   };
-
+  
   _onPress(data) {
      this.props.navigator.push({
       title: data.title,

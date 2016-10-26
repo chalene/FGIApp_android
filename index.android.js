@@ -11,6 +11,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Navigator,
   Image,
   //StatusBarIOS,
 } from 'react-native';
@@ -96,11 +97,18 @@ export default class FGIApp extends Component {
       let lsView = null;
       console.log(this.state);
       if (this.state.isLogin) {
-        content = <Bar
-          uid={this.state.uid}
-          isFirstTime={this.state.isFirstTime}
-          callbackLogout={this._onStateChange.bind(this)}
-        />
+        content = <Navigator
+        //ref='navigator'
+        style={styles.navigator}
+        configureScene={this.configureScene}
+        renderScene={this.renderScene}
+        uid = {this.state.uid}
+        initialRoute={{
+          component: Bar,
+          name: 'Bar',
+          id:'Bar',
+       }}
+      />
       } else {
         if (this.state.onSignup) {
           lsView = <Signup
@@ -131,6 +139,35 @@ export default class FGIApp extends Component {
 
     });
 
+  }
+
+  renderScene= (route, navigator) => {
+    let Component = route.component
+
+    
+    if(route.id === 'Bar'){
+      return (
+        <Bar
+          navigator={navigator} 
+          route={route}
+          uid={this.state.uid}
+          isFirstTime={this.state.isFirstTime}
+          callbackLogout={this._onStateChange.bind(this)}
+        />
+      );
+    } else {
+      return (
+        <Component navigator={navigator} route={route} />
+      );
+    }
+  }
+
+  configureScene= (route) => {
+    if (route.name && route.name === 'Search') {
+      return Navigator.SceneConfigs.FadeAndroid
+    } else {
+      return Navigator.SceneConfigs.FloatFromBottomAndroid
+    }
   }
 
   render() {
