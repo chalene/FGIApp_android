@@ -21,6 +21,22 @@ import Signup from './view/signup';
 import Bar from './view/bar';
 import Util from './view/utils';
 
+const updateData = [
+  {
+    title:"推广消息的标题1",
+    date: "2016-02-18",
+    link: "www.google.com",
+    key:0,
+    img: require('./view/img/chip.jpg'), //just pass the url
+  },{
+    title:"推广消息的标题2",
+    date: "2016-02-19",
+    link: "www.google.com",
+    key:1,
+    img: require('./view/img/forensics.jpg'),
+  },
+];
+
 
 export default class FGIApp extends Component {
 //class FGIApp extends Component {
@@ -98,17 +114,17 @@ export default class FGIApp extends Component {
       console.log(this.state);
       if (this.state.isLogin) {
         content = <Navigator
-        //ref='navigator'
-        style={styles.navigator}
-        configureScene={this.configureScene}
-        renderScene={this.renderScene}
-        uid = {this.state.uid}
-        initialRoute={{
-          component: Bar,
-          name: 'Bar',
-          id:'Bar',
-       }}
-      />
+          //ref='navigator'
+          style={styles.navigator}
+          configureScene={this.configureScene}
+          renderScene={this.renderScene}
+          uid = {this.state.uid}
+          initialRoute={{
+            component: Bar,
+            name: 'Bar',
+            id:'Bar',
+         }}
+        />
       } else {
         if (this.state.onSignup) {
           lsView = <Signup
@@ -150,9 +166,28 @@ export default class FGIApp extends Component {
         <Bar
           navigator={navigator} 
           route={route}
+          data={updateData}
           uid={this.state.uid}
           isFirstTime={this.state.isFirstTime}
           callbackLogout={this._onStateChange.bind(this)}
+        />
+      );
+    } else if (route.id === 'Product') {
+      return (
+        <Product
+          name={route.name}
+          onForward={() => {
+            var nextIndex = route.index + 1;
+            navigator.push({
+              name: 'Scene ' + nextIndex,
+              index: nextIndex,
+            });
+          }}
+          onBack={() => {
+            if (route.index > 0) {
+              navigator.pop();
+            }
+          }}
         />
       );
     } else {

@@ -41,7 +41,7 @@ class UpdateDetail extends Component{
   static propTypes = {
     data: React.PropTypes.object.isRequired,
   };
-  
+
   render() {
     return(
         <WebView
@@ -60,25 +60,29 @@ class UpdateListItems extends Component{
   static propTypes = {
     data: React.PropTypes.array.isRequired,
   };
-  
-  _onPress(data) {
-     this.props.navigator.push({
+
+  _onPress = (data)=> {
+    console.log("========>");
+    console.log(data);
+    this.props.navigator.push({
       title: data.title,
       component:UpdateDetail,
       navigationBarHidden: false,
-      passProps:{data:data}
+      passProps:{data:data},
     })
   }
-  
+
 
   render() {
     const items = this.props.data.map((elem) => {
+      console.log(elem);
+
       return(
         <View key={elem.key} style={styles.updateContainer}>
           <View style={styles.updateItemDate}>
             <Text style={{color:"#FFF",fontSize:12}}>{elem.date}</Text>
           </View>
-          <TouchableHighlight underlayColor="#eee" style={styles.updateItem} onPress={() => this._onPress.bind(elem)}>
+          <TouchableHighlight underlayColor="#eee" style={styles.updateItem} onPress={() => this._onPress(elem)}>
             <View>
               <Text style={{color:"#222",fontSize:15, paddingLeft:10, marginLeft:20}}>{elem.title}</Text>
               <View style={styles.updateImgContainer}>

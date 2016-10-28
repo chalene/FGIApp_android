@@ -37,6 +37,23 @@ const TAB_PRESS_4=require('./image/icon_bottomtag_me_s.png');
  *   -false. fully functioned. 
  */
 
+const updateData = [
+  {
+    title:"推广消息的标题1",
+    date: "2016-02-18",
+    link: "www.google.com",
+    key:0,
+    img: require('./img/chip.jpg'), //just pass the url
+  },{
+    title:"推广消息的标题2",
+    date: "2016-02-19",
+    link: "www.google.com",
+    key:1,
+    img: require('./img/forensics.jpg'),
+  },
+];
+
+
 class Bar extends Component{
   static defaultProps = {
     isFirstTime: "0"
@@ -45,6 +62,7 @@ class Bar extends Component{
   static propTypes = {
     uid: React.PropTypes.string.isRequired,
     isFirstTime: React.PropTypes.string.isRequired,
+    data: React.PropTypes.array.isRequired,
   };
 
   constructor(props) {
@@ -52,6 +70,7 @@ class Bar extends Component{
     this.state = {
       selectedTab: this.props.isFirstTime==="1"? '我的帐户':'华大商城',
       isFirstTime: this.props.isFirstTime==="1"? true: false,
+      data: updateData, 
     };
   }
 
@@ -168,22 +187,22 @@ class Bar extends Component{
        case '华大商城':  
          tabNomal=TAB_NORMAL_1;  
          tabPress=TAB_PRESS_1; 
-         navigatorview=<Store uid={this.props.uid}/>;
+         navigatorview=<Store uid={this.props.uid} navigator={this.props.navigator}/>;
          break;  
      case '推广动态':  
        tabNomal=TAB_NORMAL_2;  
        tabPress=TAB_PRESS_2;
-       navigatorview=<Update uid={this.props.uid}/>;
+       navigatorview=<Update uid={this.props.uid} data={updateData} navigator={this.props.navigator}/>;
        break;  
      case '全部订单':  
        tabNomal=TAB_NORMAL_3;  
        tabPress=TAB_PRESS_3; 
-       navigatorview=<Order uid={this.props.uid}/>;
+       navigatorview=<Order uid={this.props.uid} navigator={this.props.navigator}/>;
        break;  
      case '我的帐户':  
        tabNomal=TAB_NORMAL_4;  
        tabPress=TAB_PRESS_4;
-       navigatorview=<User uid={this.props.uid} isFirstTime={this.state.isFirstTime} callbackLogout={this.props.callbackLogout}/>;
+       navigatorview=<User uid={this.props.uid} isFirstTime={this.state.isFirstTime} callbackLogout={this.props.callbackLogout} navigator={this.props.navigator}/>;
        break;  
        default:  
   
