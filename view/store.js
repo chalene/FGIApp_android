@@ -118,12 +118,15 @@ class ItemDetail extends Component{
   static propTypes = {
     data: React.PropTypes.object.isRequired,
     uid: React.PropTypes.string.isRequired,
+    index: React.PropTypes.number.isRequired,
+
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 0
+      selectedIndex: 0,
+      index:0
     };
   }
 
@@ -223,11 +226,18 @@ class StoreItemList extends Component{
 
   _onPress = (index) => {
     const data = this.props.data[index];
+    console.log(data);
+    console.log(index);
     this.props.navigator.push({
       title: data.title,
       component:ItemDetail,
+      id:"ItemDetail",
       navigationBarHidden: false,
-      passProps: { data: data, uid: this.props.uid },
+      passProps: { 
+        data: data, 
+        uid: this.props.uid,
+        index: index, 
+      },
     })
   };
 

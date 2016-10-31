@@ -19,6 +19,7 @@ import {
 import Login from './view/login';
 import Signup from './view/signup';
 import Bar from './view/bar';
+import {Store,ItemDetail} from './view/store';
 import Util from './view/utils';
 
 const updateData = [
@@ -190,9 +191,23 @@ export default class FGIApp extends Component {
           }}
         />
       );
-    } else {
+    } else if (route.id === 'i'){
+      console.log(this.state.index);//
       return (
-        <Component navigator={navigator} route={route} />
+        <ItemDetail
+          navigator={navigator} 
+          route={route}
+          index={this.state.index}
+          data={this.state.data[this.state.index]}
+          uid={this.state.uid}
+        />
+      );
+    } else {
+      console.log("route.component")
+      console.log(route.component)
+      console.log(route.id)
+      return (
+        <Component {...route.passProps} navigator={navigator} route={route}  />
       );
     }
   }
