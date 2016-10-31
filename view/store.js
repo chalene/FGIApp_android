@@ -173,7 +173,9 @@ class ItemDetail extends Component{
     }
   };
 
-
+  _onBack(){
+    this.props.navigator.pop()
+  }
 
   render() {
     const {data} = this.props;
@@ -205,11 +207,7 @@ class ItemDetail extends Component{
           </View>
         </View>
         <View style={{paddingLeft:20,paddingRight:20,paddingTop:20}}>
-          <SegmentedControlIOS 
-          values={['产品详情']} 
-          tintColor="#888" 
-          selectedIndex={0}
-          onChange={this._onChange}/>
+          <Text  style={{color:"#555",fontSize:13,textAlign: 'center'}}>产品详情</Text>
           {this._renderDetail()}      
         </View>
       </ScrollView>
@@ -227,7 +225,6 @@ class StoreItemList extends Component{
   _onPress = (index) => {
     const data = this.props.data[index];
     console.log(data);
-    console.log(index);
     this.props.navigator.push({
       title: data.title,
       component:ItemDetail,

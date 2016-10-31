@@ -12,7 +12,9 @@ import {
   Text,
   View,
   Navigator,
+  TouchableHighlight,
   Image,
+  BackAndroid,
   //StatusBarIOS,
 } from 'react-native';
 
@@ -83,6 +85,10 @@ export default class FGIApp extends Component {
     this._renderPage();
   }
 
+  componentDidMount() {
+    //the '.bind(this)' makes sure 'this' refers to 'ViewComponent'
+  }
+
   _onStateChange = (newState) => {
     //login ,signup or logout
     this.setState(newState);
@@ -124,7 +130,33 @@ export default class FGIApp extends Component {
             component: Bar,
             name: 'Bar',
             id:'Bar',
-         }}
+            setNavigationBarHidden:false,
+          }}
+          navigationBar={
+             <Navigator.NavigationBar
+               routeMapper={{
+                 LeftButton: (route, navigator, index, navState) =>
+                  {
+                    if (route.index === 0) {
+                      return null;
+                    } else {
+                      return (
+                        <TouchableHighlight onPress={() => navigator.pop()}>
+                            <Text style={{color:'white',fontSize:20,fontWeight: 'bold',paddingTop:10,backgroundColor: null}}>《 返回</Text>
+                        </TouchableHighlight>
+                      );
+                    }
+                  },
+
+                 RightButton: (route, navigator, index, navState) =>
+                   { return ; },
+                 Title: (route, navigator, index, navState) =>
+                   { return ; },
+               }}
+               style={{backgroundColor: null,height:30,flex:1,position: 'absolute',
+bottom: 0, left: 0}}
+             />
+          }
         />
       } else {
         if (this.state.onSignup) {
@@ -161,7 +193,11 @@ export default class FGIApp extends Component {
   renderScene= (route, navigator) => {
     let Component = route.component
 
-    
+    BackAndroid.addEventListener('hardwareBackPress', function() {
+      navigator.pop();
+      return true;
+    });
+
     if(route.id === 'Bar'){
       return (
         <Bar
