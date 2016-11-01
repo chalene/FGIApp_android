@@ -9,7 +9,8 @@ import {
   Text,
   TextInput,
   Image,
-  AlertIOS,
+  //AlertIOS,
+  Alert,
   View
 } from 'react-native';
 
@@ -69,13 +70,13 @@ class Login extends Component{
           if (resData.error !== "false") {
             switch(resData.loginState){   
               case "0":
-                AlertIOS.alert('登陆失败', '审核未完成');     
+                Alert.alert('登陆失败', '审核未完成');     
                 break;                                                         
               case "2": 
-                AlertIOS.alert('登陆失败', '用户名不存在');
+                Alert.alert('登陆失败', '用户名不存在');
                 break;
               case "3":
-                AlertIOS.alert('登陆失败', '用户名或密码不匹配');
+                Alert.alert('登陆失败', '用户名或密码不匹配');
             }
           } else {
             AsyncStorage.setItem('loginState',"1").done();
@@ -84,7 +85,7 @@ class Login extends Component{
             this.loginSuccess(resData.uid);
           }
         } else {
-          AlertIOS.alert('登陆失败', '服务器无响应');
+          Alert.alert('登陆失败', '服务器无响应');
         }
     })
   }
@@ -116,7 +117,7 @@ class Login extends Component{
             <Icon name="user" style={styles.icon} size={20} />
           </View>
           <View style={styles.inputRow}>
-            <TextInput type="TextInput" name="password" ref='SecondInput' placeholderTextColor="#777" style={styles.input} placeholder="密码" password={true}/>
+            <TextInput type="TextInput" name="password" ref='SecondInput' placeholderTextColor="#777" style={styles.input} placeholder="密码" password={true} secureTextEntry={true}/>
             <Icon name="lock" style={styles.icon} size={20} />
           </View>
         </Form>

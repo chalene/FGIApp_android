@@ -13,7 +13,8 @@ import {
   WebView,
   View,
   ActivityIndicator,
-  AlertIOS
+  //AlertIOS
+  Alert,
 } from 'react-native';
 
 import Util from './utils';
@@ -132,7 +133,7 @@ export default class extends Component{
         _this.setState({
           animating: false
         });
-        AlertIOS.alert('读取数据失败', '请检查您的网络连接');
+        Alert.alert('读取数据失败', '请检查您的网络连接');
       }
     })
   }

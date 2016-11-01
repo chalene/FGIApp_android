@@ -6,7 +6,8 @@ import {
   TouchableHighlight,
   StyleSheet,
   TextInput,
-  AlertIOS,
+  //AlertIOS,
+  Alert,
   ScrollView,
   Text,
   View,
@@ -193,7 +194,7 @@ export default class extends Component{
     },(resData) => {
       if (resData.error !== "true") {
           if (resData.message==="0") {
-            AlertIOS.alert('订单信息有误', resData.errMsg);
+            Alert.alert('订单信息有误', resData.errMsg);
           }else{
             this.props.navigator.push({
               title: "支付宝付款",
@@ -203,7 +204,7 @@ export default class extends Component{
             })
           }
         }else{
-          AlertIOS.alert('服务器无响应', '请稍后再试');
+          Alert.alert('服务器无响应', '请稍后再试');
         }
     })
   }

@@ -9,7 +9,8 @@ import {
   Text,
   Modal,
   Image,
-  AlertIOS,
+  //AlertIOS,
+  Alert,
   StatusBarIOS,
   View} from 'react-native';
 
@@ -91,12 +92,12 @@ class Signup extends Component{
     },(resData) => {
         if (resData) {
           if (resData.correct==="false") {
-            AlertIOS.alert('注册失败', '验证码错误');
+            Alert.alert('注册失败', '验证码错误');
           }else{
             this.signupSuccess();
           }
         }else{
-          AlertIOS.alert('注册失败', '服务器无响应');
+          Alert.alert('注册失败', '服务器无响应');
         }
     })
   }
@@ -164,15 +165,15 @@ class Signup extends Component{
       },(resData) => {
           if (resData) {
             if (resData.error!=="false") {
-              AlertIOS.alert('获取验证码失败', resData.message=='0'?'发送失败':'手机号已被注册');
+              Alert.alert('获取验证码失败', resData.message=='0'?'发送失败':'手机号已被注册');
               this.setState({
                  timeStamp: 0,
               });
             }else{
-              AlertIOS.alert('获取验证码成功', '已发送到你的手机，有效时间30分钟');
+              Alert.alert('获取验证码成功', '已发送到你的手机，有效时间30分钟');
             }
           }else{
-            AlertIOS.alert('获取验证码失败', '服务器无响应');
+            Alert.alert('获取验证码失败', '服务器无响应');
             this.setState({
                timeStamp: 0,
             });
@@ -180,7 +181,7 @@ class Signup extends Component{
       })
       
     } else {
-      AlertIOS.alert("获取验证码失败", "一分钟只可获取一次")
+      Alert.alert("获取验证码失败", "一分钟只可获取一次")
     }
   }
 
@@ -218,8 +219,9 @@ class Signup extends Component{
         <Modal
           animationType={"slide"}
           transparent={false}
-          visible={this.state.showModal}>
-          onRequestClose={() => {alert("Modal has been closed.")}}
+          onRequestClose={() => {this._closeModal()}}
+          visible={this.state.showModal}
+          >
           <View style={styles.modalContainer}>
             <View style={styles.modalNav}>
               <TouchableHighlight underlayColor="#fff" onPress={this.closeModal}><Text style={[styles.btnText,{width:80,textAlign:"left"}]}>取消</Text></TouchableHighlight>

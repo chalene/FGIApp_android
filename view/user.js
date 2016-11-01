@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 
 import { 
   AsyncStorage,
-  AlertIOS,
+  Alert,
+  //AlertIOS,
   //NavigatorIOS,
   Navigator,
   TouchableHighlight,
@@ -85,20 +86,20 @@ export class UserInfo extends Component{
 
           if (resData.title !== "true") {
             if (resData.title === "提交失败") {
-              AlertIOS.alert(resData.title, resData.message);
+              Alert.alert(resData.title, resData.message);
               return false
             } else if (resData.title === "提交成功") {
-              AlertIOS.alert(resData.title, resData.message);
+              Alert.alert(resData.title, resData.message);
               this.props.navigator.pop();
               return true
             }
           } else {
-            AlertIOS.alert('服务器无响应', '请稍后再试');
+            Alert.alert('服务器无响应', '请稍后再试');
             return false
           }
       })
     }else{
-      AlertIOS.alert('提交失败', '所有资料均为必填');
+      Alert.alert('提交失败', '所有资料均为必填');
     }
   }
 
@@ -180,24 +181,21 @@ export class UserInfo extends Component{
     });
   }
 
-  _inputFocused(refName) {
-    setTimeout(() => {
-      let scrollResponder = this.refs.scrollView.getScrollResponder();
-      scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-        findNodeHandle(this.refs[refName]),
-        130, //additionalOffset
-        true
-      );
-    }, 50);
-  }
+  // _inputFocused(refName) {
+  //   setTimeout(() => {
+  //     let scrollResponder = this.refs.scrollView.getScrollResponder();
+  //     scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+  //       findNodeHandle(this.refs[refName]),
+  //       130, //additionalOffset
+  //       true
+  //     );
+  //   }, 50);
+  // }
 
-  _refFocus (nextField) {
-    this.refs[nextField].focus();
-  }
+  // _refFocus (nextField) {
+  //   this.refs[nextField].focus();
+  // }
 
-  focusNextField = (nextField) => {
-    this.refs[nextField].focus();
-  };
 
   render() {
     const data = this.props.data;
@@ -220,7 +218,7 @@ export class UserInfo extends Component{
           <TextInput type="TextInput" name="id_number" style={styles.orderInput} ref="id" returnKeyType = {"next"} placeholder="请输入18位身份证号码" />
         </View>
       idUpload = <View style={[styles.orderButtonContainer,{paddingBottom:30}]}>
-          <TouchableHighlight underlayColor="#eee" style={[styles.btn_if,{backgroundColor:'#ddd'}]} onPress={() => this._uploadId()}>
+          <TouchableHighlight underlayColor="#eee" style={[styles.btn_if,{backgroundColor:'#ddd'}]} onPress={() => this._uploadId(this)}>
             <Text style={{color:'#555'}}>上传身份证正面照</Text>
           </TouchableHighlight>
           <TouchableHighlight underlayColor="#eee" style={[styles.btn_if,{backgroundColor:'#ddd'}]} onPress={() => this._uploadIdBack()}>
@@ -238,7 +236,7 @@ export class UserInfo extends Component{
 
     return(
         <ScrollView  ref='scrollView' showsVerticalScrollIndicator={false}>
-          <Text style={{paddingLeft:30,paddingTop:20,color:"#888"}}>需要提交资料审核后完成注册，资料审核成功后将有邮件通知你。审核需要24小时。</Text>
+          <Text style={{marginLeft:25,paddingLeft:30,paddingTop:20,color:"#888"}}>需要提交资料审核后完成注册，资料审核成功后将有邮件通知你。审核需要24小时。</Text>
           <Form style={styles.orderContainer} ref="form">
             <View style={styles.orderInputContainer}>
               <Text style={styles.orderInputText}>用户名</Text>
@@ -254,11 +252,11 @@ export class UserInfo extends Component{
             </View>
             <View style={styles.orderInputContainer}>
               <Text style={styles.orderInputText}>新密码</Text>
-              <TextInput  type="TextInput"  password={true} name="password1" style={styles.orderInput} ref="password1" returnKeyType = {"next"} placeholder="至少包含一个数字和一个字母" />
+              <TextInput  type="TextInput"  password={true} name="password1" style={styles.orderInput} ref="password1" returnKeyType = {"next"} placeholder="至少包含一个数字和一个字母" secureTextEntry={true}/>
             </View>
             <View style={styles.orderInputContainer}>
               <Text style={styles.orderInputText}>再次输入密码</Text>
-              <TextInput  type="TextInput"  password={true} name="password2" style={styles.orderInput} ref="password2" returnKeyType = {"next"} />
+              <TextInput  type="TextInput"  password={true} name="password2" style={styles.orderInput} ref="password2" returnKeyType = {"next"} secureTextEntry={true}/>
             </View>
             {idInput}
             <View style={styles.orderInputContainer}>
@@ -314,7 +312,7 @@ class UserRefund extends Component{
   _onSubmitRefund() {
       let inputMoney = parseInt(this.refs.refundForm.getValues().refundMoney);
       if (inputMoney>this.state.balance) {
-        AlertIOS.alert("提现失败","你的钱包里没有足够的钱")
+        Alert.alert("提现失败","你的钱包里没有足够的钱")
       }else{
         Util.post(`${url}/withdraw_to_alipay/`,{
           uid: this.state.uid,
@@ -322,7 +320,7 @@ class UserRefund extends Component{
         },(resData) => {
            if (resData.message=="1") {
               console.log(resData);
-              AlertIOS.alert("提现成功","将在24小时内转到你的支付宝账户");
+              Alert.alert("提现成功","将在24小时内转到你的支付宝账户");
               this.props.updateMoney(resData.balance);
               this.props.navigator.pop();
            }
@@ -438,26 +436,26 @@ class UserLink extends Component{
         if (resData.error !== "true") {
           switch(resData.message){
             case "0":
-              AlertIOS.alert("修改绑定失败");
+              Alert.alert("修改绑定失败");
               break;
             case "1":
-              AlertIOS.alert("修改绑定成功");
+              Alert.alert("修改绑定成功");
               this.props.updateAlipay(alipay);
               this.props.navigator.pop();
               break;
             case "2":
-              AlertIOS.alert("银行卡帐户已被他人使用");
+              Alert.alert("银行卡帐户已被他人使用");
               break;
             case "3":
-              AlertIOS.alert("密码错误");
+              Alert.alert("密码错误");
               break;
           }
         }else{
-          AlertIOS.alert("服务器无响应","请稍后再试");
+          Alert.alert("服务器无响应","请稍后再试");
         }
       })
     }else{
-      AlertIOS.alert("银行卡帐户不匹配");
+      Alert.alert("银行卡帐户不匹配");
     }
   }
 

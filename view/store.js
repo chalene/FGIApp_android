@@ -17,7 +17,8 @@ import {
   View,
   AsyncStorage,
   ActivityIndicator,
-  AlertIOS
+  //AlertIOS
+  Alert,
 } from 'react-native';
 
 import Util from './utils';
@@ -292,7 +293,7 @@ export default class extends Component{
       Util.post(`${url}/products/`, {'version':  version}, (resData) => {
         if (resData.error) {
           console.log('error');
-          AlertIOS.alert("网络错误", "请联网后重新开启app");
+          Alert.alert("网络错误", "请联网后重新开启app");
           this.setState({
             ready: false,
             animating: false

@@ -7,7 +7,8 @@ import {
   Image,
   Text,
   TouchableHighlight,
-  AlertIOS,
+  //AlertIOS,
+  Alert,
   WebView
 } from 'react-native';
 
@@ -45,7 +46,7 @@ export default class extends Component{
     },(resData) => {
       if (resData.error !== "true") {
           if (resData.message==="0") {
-            AlertIOS.alert('请稍后再试');
+            Alert.alert('请稍后再试');
           } else {
             let url = resData.url;
             this.setState({
@@ -54,7 +55,7 @@ export default class extends Component{
             })
           }
         }else{
-          AlertIOS.alert('服务器无响应', '请稍后再试');
+          Alert.alert('服务器无响应', '请稍后再试');
         }
     })
   }
