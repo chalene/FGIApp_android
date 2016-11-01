@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { 
   AsyncStorage,
-  ProgressViewIOS,
+  //ProgressViewIOS,
   TouchableHighlight,
   StyleSheet,
   TextInput,
@@ -268,10 +268,9 @@ export default class extends Component{
 
   render() {
     return(
-      <ScrollView ref='scrollView' showsVerticalScrollIndicator={false} style={{paddingLeft:20, paddingRight:20, backgroundColor:"#f7f7f7"}}>
+      <ScrollView ref='scrollView' showsVerticalScrollIndicator={false} style={{marginTop:30,paddingLeft:20, paddingRight:20, backgroundColor:"#f7f7f7"}}>
         <Text style={{marginTop: 10}}>{this.state.stepTitle}</Text>
         <View style={[styles.orderContainer,styles.form1]}>
-            <ProgressViewIOS progressTintColor="#1E868C" style={styles.progressView} progress={this._getProgress(0.333)}/>
             <Form ref="form1">
               <View style={styles.orderInputContainer}>
                 <Text style={styles.orderInputText}>姓名：</Text>
@@ -297,7 +296,6 @@ export default class extends Component{
             </View>
           </View>
           <View style={[styles.orderContainer, styles.form2]}>
-            <ProgressViewIOS progressTintColor="#1E868C" style={styles.progressView} progress={this._getProgress(0.666)}/>
             <Form ref="form2">
               {this._renderSecondForm()}
             </Form>
@@ -314,7 +312,6 @@ export default class extends Component{
             </View>
           </View>
           <View style={[styles.orderContainer,styles.form3]}>
-            <ProgressViewIOS progressTintColor="#1E868C" style={styles.progressView} progress={this._getProgress(1)}/>
             <View style={{alignItems:"flex-start", width: Util.size.width-80}}>
               <Text style={{marginTop:20,fontWeight:"500",marginBottom:5}}>订单详情</Text>
               <Text style={styles.detailListReg}><Text style={styles.detailListEm}>订单项目：{this.state.title}</Text></Text>
