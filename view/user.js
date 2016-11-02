@@ -123,6 +123,9 @@ export class UserInfo extends Component{
         path: 'images'
       }
     };
+    console.log(">>>>>>>>>>>ImagePickerManager");
+    console.log(ImagePickerManager.showImagePicker);
+
     ImagePickerManager.showImagePicker(options, (response) => {
       console.log('Response = ', response);
       if (response.didCancel) {
@@ -323,7 +326,7 @@ class UserRefund extends Component{
         },(resData) => {
            if (resData.message=="1") {
               console.log(resData);
-              Alert.alert("提现成功","将在24小时内转到你的支付宝账户");
+              Alert.alert("提现成功","将在月结日转入您的银行卡");
               this.props.updateMoney(resData.balance);
               this.props.navigator.pop();
            }
