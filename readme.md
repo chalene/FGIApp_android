@@ -70,18 +70,32 @@ iphone 5(s) - pass
 iphone4s - pass
 
 Android - pass
+
 ＝＝参数＝＝
+
 主屏尺寸 5.96英寸
+
 主屏材质  Super AMOLED
+
 主屏分辨率  2560x1440像素
 
+
+
 屏幕像素密度  493ppi
+
 操作系统  Android OS 7.0
+
 核心数  四核
+
 CPU型号  高通 骁龙805（APQ8084AB）
+
 CPU频率  2.7GHz
+
 GPU型号  高通 Adreno420
+
 RAM容量  3GB
+
 ROM容量  32GB/64GB
+
 ＝＝＝＝＝＝＝
 
