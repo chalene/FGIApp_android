@@ -31,6 +31,7 @@ import ImagePickerManager from 'react-native-image-picker';
 //import VibrancyView  from 'react-native-blur';
 import Form from 'react-native-form';
 import Share, {ShareSheet, Button} from 'react-native-share';
+import ModalPicker from 'react-native-modal-picker'
 
 // Configuration file
 import { url } from '../config';
@@ -58,7 +59,8 @@ export class UserInfo extends Component{
       idFrontSource: {uri:'idfront'},
       idFrontSourceData: "",
       idBackSource: {uri:'idback'},
-      idBackSourceData:""
+      idBackSourceData:"",
+      genders: "",
     };
   }
 
@@ -68,6 +70,9 @@ export class UserInfo extends Component{
     const info = this.refs.form.getValues();
     let valid = true;
     for (var key in info) {
+      if (this.state.genders !== ""){
+        info['gender'] = this.state.genders;
+      }
       if (info[key]==="") {
         valid = false;
       }
@@ -208,6 +213,13 @@ export class UserInfo extends Component{
     let oldPass = null;
     let idInput = null;
     let idUpload = null;
+    let index = 0;
+    const genderA = [
+            { key: index++, section: true, label: '性别' },
+            { key: index++, label: '男' },
+            { key: index++, label: '女' },
+
+        ];
 
     if (!data.isNew) {
       oldPass = <View style={styles.orderInputContainer}>
@@ -248,9 +260,13 @@ export class UserInfo extends Component{
               <Text style={styles.orderInputText}>用户名</Text>
               <TextInput defaultValue={data.username} type="TextInput" name="name" style={styles.orderInput} ref="username" returnKeyType={"next"} autoFocus={true} autoCapitalize="none" autoCorrect={false} placeholder="请输入中文名" clearButtonMode='while-editing' blurOnSubmit={false} />
             </View>
-            <View style={styles.orderInputContainer}>
+            <View style={{width:Util.size.width-80,marginTop:20}}>
               <Text style={styles.orderInputText}>性别</Text>
-              <TextInput defaultValue={data.gender} type="TextInput" name="gender" style={styles.orderInput} ref="gender" returnKeyType = {"next"} placeholder="请填写“男”或者“女”" />
+              <ModalPicker
+                data={genderA} 
+                type="ModalPicker"
+                onChange={(option)=>{ this.setState({genders:option.label})}}>
+              </ModalPicker>
             </View>
             <View style={styles.orderInputContainer}>
               <Text style={styles.orderInputText}>邮箱</Text>

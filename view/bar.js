@@ -204,7 +204,7 @@ class Bar extends Component{
        tabPress=TAB_PRESS_4;
        navigatorview=<User uid={this.props.uid} isFirstTime={this.state.isFirstTime} callbackLogout={this.props.callbackLogout} navigator={this.props.navigator}/>;
        break;  
-       default:  
+       default:  break; 
   
      }  
      return(  
