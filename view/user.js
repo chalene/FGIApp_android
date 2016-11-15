@@ -31,7 +31,7 @@ import ImagePickerManager from 'react-native-image-picker';
 //import VibrancyView  from 'react-native-blur';
 import Form from 'react-native-form';
 import Share, {ShareSheet, Button} from 'react-native-share';
-import ModalPicker from 'react-native-modal-picker'
+import ModalPicker from 'react-native-modal-picker';
 
 // Configuration file
 import { url } from '../config';
@@ -69,16 +69,22 @@ export class UserInfo extends Component{
     // SSH post: this.refs.form.getValues()
     const info = this.refs.form.getValues();
     let valid = true;
-    for (var key in info) {
-      if (this.state.genders !== ""){
+    let error = "";
+
+    if (this.state.genders !== "请选择"){
         info['gender'] = this.state.genders;
-      }
-      if (info[key]==="") {
+    }
+
+    for (var key in info) {
+      if (info[key]==="" || info[key]=== undefined) {
         valid = false;
+        error = key + "为空";
       }
     }
+
     if (!this.state.idFrontSourceData || !this.state.idBackSourceData) {
       valid = false;
+      error =  "请上传身份证图片";
     }
 
     if (valid) {
@@ -107,7 +113,7 @@ export class UserInfo extends Component{
           }
       })
     }else{
-      Alert.alert('提交失败', '所有资料均为必填');
+      Alert.alert('提交失败',error);
     }
   }
 
@@ -264,6 +270,7 @@ export class UserInfo extends Component{
               <Text style={styles.orderInputText}>性别</Text>
               <ModalPicker
                 data={genderA} 
+                initValue="请选择"
                 type="ModalPicker"
                 onChange={(option)=>{ this.setState({genders:option.label})}}>
               </ModalPicker>

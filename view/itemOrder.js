@@ -18,6 +18,7 @@ import Util from './utils';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Alipay from './alipay';
 import Form from 'react-native-form';
+import ModalPicker from 'react-native-modal-picker';
 
 import { url } from '../config';
 
@@ -84,8 +85,11 @@ export default class extends Component{
       stepTitle: "第一步: 委托人／受检人信息",
       numOfTesters: 1,
       orderID: data.orderID,
+      originPrice:data.price,
       price: data.price,
       userID: props.uid,
+      samples:{},
+      relations:{},
       form1:{
         name:"",
         phoneNum: "",
@@ -162,6 +166,54 @@ export default class extends Component{
         }
         break;
       case 2: 
+        var tempPrice = 0;
+          // Update Price 
+        switch (this.state.title){
+          case "亲子鉴定":
+          case "收养亲子鉴定":
+          case "妊娠亲子鉴定": 
+            if (this.state.numOfTesters > 2) {
+              tempPrice = this.state.originPrice+(this.state.numOfTesters-2)*1000;
+              Alert.alert("价格变动","被检测人数为"+this.state.numOfTesters);
+            } else {
+              tempPrice = this.state.originPrice; 
+            }  
+            break;
+          case "DNA档案": 
+            if (this.state.numOfTesters >1 ){
+              tempPrice = this.state.originPrice+(this.state.numOfTesters-1)*this.state.originPrice;
+              Alert.alert("价格变动","被检测人数为"+this.state.numOfTesters);
+            } else {
+              tempPrice = this.state.originPrice;
+            }
+            break;
+          case "DNA家谱":
+            if (this.state.numOfTesters >1 ){
+              tempPrice = this.state.originPrice+(this.state.numOfTesters-1)*1000;
+              Alert.alert("价格变动","被检测人数为"+this.state.numOfTesters);
+            } else {
+              tempPrice = this.state.originPrice;
+            }
+            break;
+          default: tempPrice = this.state.originPrice;
+            break;
+        }
+        
+        for (var s in this.state.samples) {
+          if (this.state.samples[s].slice(-1) === 'I') {
+            if (this.state.samples[s].slice(-2 )=== 'II') {
+              Alert.alert("价格变动",this.state.samples[s]);
+              tempPrice = tempPrice+800;
+            } else {
+              tempPrice = tempPrice+400;
+              Alert.alert("价格变动",this.state.samples[s]);
+            }
+          } else {
+            tempPrice = tempPrice;
+          }
+        }
+        this.setState({price:tempPrice});
+
         title = "第三步：创建订单"
         styles.form3={
         }
@@ -185,29 +237,81 @@ export default class extends Component{
   };
 
   _pay(data) {
-    Util.post(`${url}/create_order/`,{
-      uid: this.props.uid,
-      form1:this.refs.form1.getValues(),
-      form2:this.refs.form2.getValues(),
-      orderId: this.state.orderID,
-      // should from create order
-    },(resData) => {
-      if (resData.error !== "true") {
-          if (resData.message==="0") {
-            Alert.alert('订单信息有误', resData.errMsg);
-          }else{
-            this.props.navigator.push({
-              title: "支付宝付款",
-              component:Alipay,
-              navigationBarHidden: false,
-              passProps: {...resData},
-            })
-          }
-        }else{
-          Alert.alert('服务器无响应', '请稍后再试');
+    const info1 = this.refs.form1.getValues();
+    const info = this.refs.form2.getValues();
+    let valid = true;
+    let error = '';
+
+
+    //file in relations and samples 
+    for (var i =1; i <= this.state.numOfTesters; i++) {
+      if (this.state.relations[i] ===  "请选择"){
+        valid = false;
+        error = "关系为空";
+      } else { 
+        info['rel'+i] = this.state.relations[i];
+      }
+      if (this.state.samples[i] ===  "请选择"){
+        valid = false;
+        error = "样本类型为空";
+      } else {
+        info['sample'+i] = this.state.samples[i];
+      }
+    }
+
+    // Alert.alert("传值检查1",this.refs.form2.rel1); //const
+    // Alert.alert("传值检查1 1",info['rel'+1]); //changed yes
+
+    //client information
+    for (var key1 in info1) {
+      if (info1[key1]==="" || info1[key1]===undefined) {
+        valid = false;
+        error = key1+"为空";
+      }
+    }
+    
+    for (var key in info) {
+      if (key.substring(0,3) ==='msg'){
+        if (info[key]==="" || info[key]===undefined) {
+          info[key] = "-";
         }
-    })
+      }
+      if (info[key]==="" || info[key]===undefined || info[key]==="请选择") {
+        valid = false;
+        error = key+"为空";
+      }
+    }
+
+    if (valid) {
+      Util.post(`${url}/create_order/`,{
+        form2:info,
+        uid: this.props.uid,
+        pay_price: this.state.price,
+        form1:this.refs.form1.getValues(),
+        //form2:this.refs.form2.getValues(),
+        orderId: this.state.orderID,
+        // should from create order
+      },(resData) => {
+        if (resData.error !== "true") {
+            if (resData.message==="0") {
+              Alert.alert('订单信息有误', resData.errMsg);
+            }else{
+              this.props.navigator.push({
+                title: "支付宝付款",
+                component:Alipay,
+                navigationBarHidden: false,
+                passProps: {...resData},
+              })
+            }
+          }else{
+            Alert.alert('服务器无响应', '请稍后再试');
+          }
+      })
+    } else {
+      Alert.alert('提交失败', error)
+    }
   }
+
 
   _addTester() {
     this.setState({
@@ -232,6 +336,38 @@ export default class extends Component{
   }
 
   _renderSecondFormItem = (index) => {
+    let indexR = 0;
+    const relationA = [
+            { key: indexR++, section: true, label: '关系' },
+            { key: indexR++, label: '爷爷' },
+            { key: indexR++, label: '奶奶' },
+            { key: indexR++, label: '外公' },
+            { key: indexR++, label: '外婆' },
+            { key: indexR++, label: '父亲' },
+            { key: indexR++, label: '母亲' },
+            { key: indexR++, label: '儿子' },
+            { key: indexR++, label: '女儿' },
+        ];
+    let indexS = 0;
+    const sampleA = [
+            { key: indexS++, section: true, label: '样本类型' },
+            { key: indexS++, label: '血液－常规检材' },
+            { key: indexS++, label: '血痕－常规剪裁' },
+            { key: indexS++, label: '毛发(带毛囊)－常规检材' },
+            { key: indexS++, label: '口腔拭子－常规检材' },
+            { key: indexS++, label: '羊水－特殊检材I' },
+            { key: indexS++, label: '胎儿流产物－特殊检材I' },
+            { key: indexS++, label: '绒毛组织－特殊检材I' },
+            { key: indexS++, label: '精斑－特殊检材I' },
+            { key: indexS++, label: '烟蒂－特殊检材I' },
+            { key: indexS++, label: '牙刷－特殊检材I' },
+            { key: indexS++, label: '特殊血痕－特殊检材I' },
+            { key: indexS++, label: '指甲－特殊检材II' },
+            { key: indexS++, label: '骨骼－特殊检材II' },
+            { key: indexS++, label: '病理蜡块－特殊检材II' },
+            { key: indexS++, label: '切片组织－特殊检材II' },
+        ];
+
     return(
       <View key={"form2"+index}>
         <View style={{marginTop:20, paddingBottom:5, borderBottomColor:"#aaa",borderBottomWidth: 1}}>
@@ -241,13 +377,33 @@ export default class extends Component{
           <Text style={styles.orderInputText}>姓名：</Text>
           <TextInput ref={"name"+index} onFocus={()=>this._inputFocused('name'+index)} returnKeyType = {"next"} onSubmitEditing={(event) => {this._refFocus("rel",index);}} type="TextInput" name={"name"+index} style={styles.orderInput}/>
         </View>
-        <View style={styles.orderInputContainer}>
+        <View style={{width:Util.size.width-80,marginTop:20}}>
           <Text style={styles.orderInputText}>关系：</Text>
-          <TextInput ref={"rel"+index} onFocus={()=>this._inputFocused('rel'+index)} returnKeyType = {"next"} onSubmitEditing={(event) => {this._refFocus("sample",index);}} type="TextInput" name={"rel"+index} style={styles.orderInput}/>
+          <ModalPicker
+            data={relationA} 
+            type="ModalPicker"
+            initValue="请选择"
+            onChange={(option)=>{ 
+              var temp = this.state.relations;
+              temp[index] = option.label;
+              this.setState(temp);
+            }
+          }>
+          </ModalPicker>
         </View>
-        <View style={styles.orderInputContainer}>
+        <View style={{width:Util.size.width-80,marginTop:20}}>
           <Text style={styles.orderInputText}>样本类型：</Text>
-          <TextInput ref={"sample"+index} onFocus={()=>this._inputFocused('sample'+index)} returnKeyType = {"next"} onSubmitEditing={(event) => {this._refFocus("msg",index);}} type="TextInput" name={"sample"+index} style={styles.orderInput}/>
+          <ModalPicker
+            data={sampleA} 
+            type="ModalPicker"
+            initValue="请选择"
+            onChange={(option)=>{ 
+              var temp = this.state.samples;
+              temp[index] = option.label;
+              this.setState(temp);
+            }
+          }>
+          </ModalPicker>
         </View>
         <View style={styles.orderInputContainer}>
           <Text style={styles.orderInputText}>附加信息：</Text>
@@ -260,8 +416,23 @@ export default class extends Component{
   _renderSecondForm() {
     var formContainer = [], form2Elem;
     for (var i = 1; i <= this.state.numOfTesters; i++) {
-      form2Elem = this._renderSecondFormItem(i);
-      formContainer.push(form2Elem);
+      if (this.state.title == "亲子鉴定" || this.state.title == "收养亲子鉴定" || this.state.title == "妊娠亲子鉴定") { 
+        if (i < 5) {
+          form2Elem = this._renderSecondFormItem(i);
+          formContainer.push(form2Elem);
+        } else {
+          Alert.alert("添加失败","被鉴定人不得多于四人");
+          break;
+        }
+      } else {
+        if (i < 6) {
+          form2Elem = this._renderSecondFormItem(i);
+          formContainer.push(form2Elem);
+        } else {
+          Alert.alert("添加失败","被鉴定人不得多于五人");
+          break;
+        }
+      }  
     };
     return(formContainer);
   }
