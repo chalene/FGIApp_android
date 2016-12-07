@@ -127,7 +127,7 @@ export class UserInfo extends Component{
       mediaType: 'photo', 
       allowsEditing: false,
       noData: false, 
-      quality:0.2,
+      quality:0.8,
       maxWidth:322,
       storageOptions: { 
         skipBackup: true, 
