@@ -349,7 +349,7 @@ class UserRefund extends Component{
         },(resData) => {
            if (resData.message=="1") {
               console.log(resData);
-              Alert.alert("提现成功","将在月结日转入您的银行卡");
+              Alert.alert("提现成功","将在五个工作日内转到您预留的银行卡账户，请留意短信通知");
               this.props.updateMoney(resData.balance);
               this.props.navigator.pop();
            }
@@ -363,7 +363,7 @@ class UserRefund extends Component{
         <Form ref="refundForm">
           <View style={styles.orderInputContainer}>
             <Text style={styles.orderInputText}>提现金额：</Text>
-            <TextInput keyboardType="number-pad" type="TextInput" name="refundMoney" style={styles.orderInput}/>
+            <TextInput keyboardType="decimal-pad" type="TextInput" name="refundMoney" style={styles.orderInput}/>
           </View>
         </Form>
         <TouchableHighlight underlayColor="#48aeb4" style={[styles.btn_if,{backgroundColor:'#1E868C',marginTop:20}]} onPress={() => this._onSubmitRefund()}>
@@ -959,7 +959,7 @@ export default class extends Component{
                   </Image>
                   <Text style={{fontSize:18,color:"#3a3a3a",marginTop:10,top:35,left:130}}>{data.username? data.username:"用户名未设置"}</Text>
                   <Text style={{fontSize:11,color:"#3a3a3a",marginTop:10,top:40,left:130}}>帐号：{data.cellphone}</Text>
-                  <Text style={{fontSize:11,color:"#3a3a3a",marginTop:10,top:45,left:130}}>钱包：¥{this.state.balance}（可提现） ¥{this.state.balance}(冻结）</Text>
+                  <Text style={{fontSize:11,color:"#3a3a3a",marginTop:10,top:45,left:130}}>钱包：¥{this.state.balance}（可提现） ¥{this.state.frozenBalance}(冻结）</Text>
                   <Text style={{fontSize:11,color:"#3a3a3a",marginTop:10,top:50,left:130}}>银行卡：{data.alipay? data.alipay:"未绑定银行卡"}</Text>              
             </View>
           </View>
