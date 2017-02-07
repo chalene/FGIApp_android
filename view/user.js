@@ -339,8 +339,8 @@ class UserRefund extends Component{
   }
 
   _onSubmitRefund() {
-      let inputMoney = parseInt(this.refs.refundForm.getValues().refundMoney);
-      if (inputMoney>this.state.balance) {
+      let inputMoney = this.state.balance;//= parseInt(this.refs.refundForm.getValues().refundMoney);
+      if (inputMoney <= 0) {
         Alert.alert("提现失败","你的钱包里没有足够的钱")
       }else{
         Util.post(`${url}/withdraw_to_alipay/`,{
@@ -348,7 +348,7 @@ class UserRefund extends Component{
           money: inputMoney
         },(resData) => {
            if (resData.message=="1") {
-              console.log(resData);
+              //console.log(resData);
               Alert.alert("提现成功","将在五个工作日内转到您预留的银行卡账户，请留意短信通知");
               this.props.updateMoney(resData.balance);
               this.props.navigator.pop();
@@ -360,12 +360,6 @@ class UserRefund extends Component{
   render() {
     return(
       <View style={{marginTop:70, alignItems:"center"}}>
-        <Form ref="refundForm">
-          <View style={styles.orderInputContainer}>
-            <Text style={styles.orderInputText}>提现金额：</Text>
-            <TextInput keyboardType="decimal-pad" type="TextInput" name="refundMoney" style={styles.orderInput}/>
-          </View>
-        </Form>
         <TouchableHighlight underlayColor="#48aeb4" style={[styles.btn_if,{backgroundColor:'#1E868C',marginTop:20}]} onPress={() => this._onSubmitRefund()}>
           <Text style={{color:'#fff'}}>确认提现</Text>
         </TouchableHighlight>
