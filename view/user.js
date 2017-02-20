@@ -69,22 +69,36 @@ export class UserInfo extends Component{
     // SSH post: this.refs.form.getValues()
     const info = this.refs.form.getValues();
     let valid = true;
-    let error = "";
-
-    if (this.state.genders !== "请选择"){
-        info['gender'] = this.state.genders;
-    }
+    let error = '所有资料均为必填';
 
     for (var key in info) {
-      if (info[key]==="" || info[key]=== undefined) {
-        valid = false;
-        error = key + "为空";
+      if (this.state.genders !== ""){
+        info['gender'] = this.state.genders;
       }
+      if (info[key]==="") {
+        valid = false; 
+        error = key + '为空';
+      }
+    }
+    
+    if (info['alipay_number'].length != 16 && info['alipay_number'].length != 19){
+        valid = false;
+        error = '银行卡长度有误';
+    }
+
+    if (info['id_number'].length != 18){
+        valid = false;
+        error = '身份证长度有误';
+    }
+
+    if (info['password1'] != info['password2']){
+        valid = false;
+        error = '两次输入密码不符';
     }
 
     if (!this.state.idFrontSourceData || !this.state.idBackSourceData) {
       valid = false;
-      error =  "请上传身份证图片";
+      error = "请上传身份证照片"
     }
 
     if (valid) {
@@ -260,7 +274,7 @@ export class UserInfo extends Component{
 
     return(
         <ScrollView  ref='scrollView' showsVerticalScrollIndicator={false}>
-          <Text style={{marginLeft:25,paddingLeft:30,paddingTop:20,color:"#888"}}>需要提交资料审核后完成注册，资料审核成功后将有邮件通知你。审核需要24小时。</Text>
+          <Text style={{marginLeft:25,paddingLeft:30,paddingTop:20,color:"#888"}}>请用真实个人信息完成注册。审核将在两小时之内完成，请留意短信通知。</Text>
           <Form style={styles.orderContainer} ref="form">
             <View style={styles.orderInputContainer}>
               <Text style={styles.orderInputText}>用户名</Text>
@@ -294,7 +308,7 @@ export class UserInfo extends Component{
             </View>
             <View style={styles.orderInputContainer}>
               <Text style={styles.orderInputText}>银行卡帐户</Text>
-              <TextInput defaultValue={data.postcode} type="TextInput" name="alipay_number" style={styles.orderInput} ref="alipay" returnKeyType = {"next"} placeholder="请填写您的收款银行卡号" />
+              <TextInput defaultValue={data.postcode} keyboardType="number-pad" type="TextInput" name="alipay_number" style={styles.orderInput} ref="alipay" returnKeyType = {"next"} placeholder="请填写您的收款银行卡号" />
             </View>
             <View style={styles.orderInputContainer}>
               <Text style={styles.orderInputText}>银行卡开户行：请精确到支行，以确保您能收到转账款</Text>
@@ -361,7 +375,7 @@ class UserRefund extends Component{
     return(
       <View style={{marginTop:70, alignItems:"center"}}>
         <TouchableHighlight underlayColor="#48aeb4" style={[styles.btn_if,{backgroundColor:'#1E868C',marginTop:20}]} onPress={() => this._onSubmitRefund()}>
-          <Text style={{color:'#fff'}}>确认提现</Text>
+          <Text style={{color:'#fff'}}>全部提现</Text>
         </TouchableHighlight>
       </View>
     );
@@ -449,36 +463,40 @@ class UserLink extends Component{
   _onSubmitLink() {
     const alipay = this.refs.linkForm.getValues().alipay;
     const branch = this.refs.linkForm.getValues().alipay_branch;
-    if (alipay === this.refs.linkForm.getValues().realipay) {
-      Util.post(`${url}/bundle_alipay_account/`,{
-        uid: this.props.uid,
-        alipay_account: alipay,
-        alipay_branch: branch,
-        password: this.refs.linkForm.getValues().password
-      },(resData) => {
-        if (resData.error !== "true") {
-          switch(resData.message){
-            case "0":
-              Alert.alert("修改绑定失败");
-              break;
-            case "1":
-              Alert.alert("修改绑定成功");
-              this.props.updateAlipay(alipay);
-              this.props.navigator.pop();
-              break;
-            case "2":
-              Alert.alert("银行卡帐户已被他人使用");
-              break;
-            case "3":
-              Alert.alert("密码错误");
-              break;
+    if (alipay.length == 16 || alipay.length == 19){
+      if (alipay === this.refs.linkForm.getValues().realipay) {
+        Util.post(`${url}/bundle_alipay_account/`,{
+          uid: this.props.uid,
+          alipay_account: alipay,
+          alipay_branch: branch,
+          password: this.refs.linkForm.getValues().password
+        },(resData) => {
+          if (resData.error !== "true") {
+            switch(resData.message){
+              case "0":
+                Alert.alert("修改绑定失败");
+                break;
+              case "1":
+                Alert.alert("修改绑定成功");
+                this.props.updateAlipay(alipay);
+                this.props.navigator.pop();
+                break;
+              case "2":
+                Alert.alert("银行卡帐户已被他人使用");
+                break;
+              case "3":
+                Alert.alert("密码错误");
+                break;
+            }
+          }else{
+            Alert.alert("服务器无响应","请稍后再试");
           }
-        }else{
-          Alert.alert("服务器无响应","请稍后再试");
-        }
-      })
+        })
+      }else{
+        Alert.alert("银行卡帐户不匹配");
+      }
     }else{
-      Alert.alert("银行卡帐户不匹配");
+      Alert.alert("银行卡长度不符合");
     }
   }
 
@@ -488,11 +506,11 @@ class UserLink extends Component{
         <Form ref="linkForm">
           <View style={styles.orderInputContainer}>
             <Text style={styles.orderInputText}>银行卡帐户：</Text>
-            <TextInput type="TextInput" name="alipay" style={styles.orderInput}/>
+            <TextInput type="TextInput" keyboardType="number-pad" name="alipay" style={styles.orderInput}/>
           </View>
           <View style={styles.orderInputContainer}>
             <Text style={styles.orderInputText}>确认银行卡帐户：</Text>
-            <TextInput type="TextInput" name="realipay" style={styles.orderInput}/>
+            <TextInput type="TextInput" keyboardType="number-pad" name="realipay" style={styles.orderInput}/>
           </View>
           <View style={styles.orderInputContainer}>
             <Text style={styles.orderInputText}>开户行：</Text>
