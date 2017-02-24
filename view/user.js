@@ -77,7 +77,7 @@ export class UserInfo extends Component{
       }
       if (info[key]==="") {
         valid = false; 
-        error = key + '为空';
+        error = key + ' 为空';
       }
     }
     
@@ -96,9 +96,9 @@ export class UserInfo extends Component{
         error = '两次输入密码不符';
     }
 
-    if (!this.state.idFrontSourceData || !this.state.idBackSourceData) {
+    if (!this.state.idFrontSourceData) {
       valid = false;
-      error = "请上传身份证照片"
+      error = "请上传身份证正面照片"
     }
 
     if (valid) {
@@ -108,7 +108,7 @@ export class UserInfo extends Component{
          phone: this.props.phone,
          // images are sent as jpeg base64
          id_card_1: this.state.idFrontSourceData,
-         id_card_2: this.state.idBackSourceData,
+         //id_card_2: this.state.idBackSourceData,
       }, (resData) => {
           this.props.showSpiner(false);
 
@@ -255,16 +255,12 @@ export class UserInfo extends Component{
           <Text style={styles.orderInputText}>身份证号码</Text>
           <TextInput type="TextInput" name="id_number" style={styles.orderInput} ref="id" returnKeyType = {"next"} placeholder="请输入18位身份证号码" />
         </View>
-      idUpload = <View style={[styles.orderButtonContainer,{paddingBottom:30}]}>
+      idUpload = <View style={[styles.orderButtonContainer,{paddingBottom:60}]}>
           <TouchableHighlight underlayColor="#eee" style={[styles.btn_if,{backgroundColor:'#ddd'}]} onPress={() => this._uploadId(this)}>
             <Text style={{color:'#555'}}>上传身份证正面照</Text>
           </TouchableHighlight>
-          <TouchableHighlight underlayColor="#eee" style={[styles.btn_if,{backgroundColor:'#ddd'}]} onPress={() => this._uploadIdBack()}>
-            <Text style={{color:'#555'}}>上传身份证背面照</Text>
-          </TouchableHighlight>
           <View style={{flex:1,flexDirection:"row"}}>
-            <Image source={this.state.idFrontSource} style={[styles.uploadId,{marginRight:30}]} />
-            <Image source={this.state.idBackSource} style={styles.uploadId} />
+            <Image source={this.state.idFrontSource} style={[styles.uploadId]} />
           </View>
         </View>
     }else{
